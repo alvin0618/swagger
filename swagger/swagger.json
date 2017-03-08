@@ -1,0 +1,187 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "eCoupon API"
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/coupon-api/servlet",
+  "tags" : [ {
+    "name" : "coupon",
+    "description" : "Everything about your Coupons",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "http://swagger.io"
+    }
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/coupon-recall" : {
+      "post" : {
+        "tags" : [ "coupon" ],
+        "summary" : "Recall coupon to become valid",
+        "operationId" : "couponRecall",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Pet object that needs to be added to the store",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CouponRecallRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ApiResponse"
+            }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/coupon-redemption" : {
+      "post" : {
+        "tags" : [ "coupon" ],
+        "summary" : "Redeem coupon",
+        "operationId" : "couponRedeem",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Pet object that needs to be added to the store",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CouponRedeemRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ApiResponse"
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/coupon-validate" : {
+      "post" : {
+        "tags" : [ "coupon" ],
+        "summary" : "Redeem coupon",
+        "operationId" : "couponValidate",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Pet object that needs to be added to the store",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CouponValidateRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ApiResponse"
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "petstore_auth" : {
+      "type" : "oauth2",
+      "authorizationUrl" : "http://petstore.swagger.io/oauth/dialog",
+      "flow" : "implicit",
+      "scopes" : {
+        "write:pets" : "modify pets in your account",
+        "read:pets" : "read your pets"
+      }
+    },
+    "api_key" : {
+      "type" : "apiKey",
+      "name" : "api_key",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "CouponRedeemRequest" : {
+      "type" : "object",
+      "required" : [ "couponCode", "storeCode" ],
+      "properties" : {
+        "couponCode" : {
+          "type" : "string",
+          "example" : "AAA111"
+        },
+        "storeCode" : {
+          "type" : "string",
+          "example" : "650"
+        }
+      }
+    },
+    "CouponValidateRequest" : {
+      "type" : "object",
+      "required" : [ "couponCode" ],
+      "properties" : {
+        "couponCode" : {
+          "type" : "string",
+          "example" : "AAA111"
+        }
+      }
+    },
+    "CouponRecallRequest" : {
+      "type" : "object",
+      "required" : [ "couponCode", "storeCode" ],
+      "properties" : {
+        "couponCode" : {
+          "type" : "string",
+          "example" : "AAA111"
+        },
+        "storeCode" : {
+          "type" : "string",
+          "example" : "650"
+        },
+        "recallType" : {
+          "type" : "string",
+          "example" : "void",
+          "description" : "Default always void",
+          "enum" : [ "void", "overring" ]
+        }
+      }
+    },
+    "ApiResponse" : {
+      "type" : "object",
+      "properties" : {
+        "responseCode" : {
+          "type" : "string",
+          "example" : "0"
+        },
+        "responseMessage" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
